@@ -1,33 +1,36 @@
-const express = require("express");
 require("dotenv").config();
+const express = require("express");
 const path = require("path");
-const { logger } = require("./middleware/loggers");
+const { logger, logEvents } = require("./middleware/loggers");
 const errorHandler = require("./middleware/errorHandler");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const corsOptions = require("./config/corOptions");
-
+const mongoose = require("mongoose");
+const dbConnection = require("./config/dbConnection");
 
 const app = express();
 const port = process.env.PORT || 5000;
 const publicPath = path.join(__dirname, "public");
 
 
-
+//database connection
+dbConnection(process.env.DATABASE_URL);
 
 
 
 //middlewares
 app.use(express.json());
+
+app.use(cors()); //corsOptions
+
 // app.use("/", express.static(publicPath)); //send static files of public to "/"
 // by default it takes the root directory and look for public folder, and send files to "/" route
 app.use(express.static("public"));
+
 app.use(logger); //maintain logs
+
 app.use(cookieParser());
-app.use(cors(corsOptions))
-
-
-
 
 
 
@@ -45,16 +48,19 @@ app.get("*", (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
 app.use(errorHandler); //error logs
 
+mongoose.connection.once("connected", () => {
+  console.log("Mongoose has connected to the database!");
+  app.listen(port, () =>
+    console.log(`Server started at http://localhost:${port}`)
+  );
+});
 
-app.listen(port, () =>
-  console.log(`Server started at http://localhost:${port}`)
-);
+mongoose.connection.once("error", (err) => {
+  console.log("MongoDB error log: ", err);
+  logEvents(
+    `${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,
+    "mongoErrLog.log"
+  );
+});

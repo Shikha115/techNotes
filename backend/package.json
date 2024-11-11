@@ -1,6 +1,6 @@
 {
   "name": "tech-notes",
-  "chapter": "lesson-2",
+  "chapter": "lesson-3",
   "version": "1.0.0",
   "description": "Mern Stack Project",
   "main": "server.js",
@@ -17,6 +17,8 @@
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "mongoose": "^8.8.1",
+    "mongoose-sequence": "^6.0.1",
     "uuid": "^11.0.2"
   },
   "devDependencies": {
