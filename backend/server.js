@@ -36,6 +36,7 @@ app.use(cookieParser());
 
 //routes
 app.use("/", require("./routes/roots"));
+app.use("/users", require("./routes/user"));
 
 app.get("*", (req, res) => {
   if (req.accepts("html")) {
