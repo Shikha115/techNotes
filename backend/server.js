@@ -8,9 +8,10 @@ const cors = require("cors");
 const corsOptions = require("./config/corOptions");
 const mongoose = require("mongoose");
 const dbConnection = require("./config/dbConnection");
+const allowedOrigins = require("./config/allowedOrigins");
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5500;
 const publicPath = path.join(__dirname, "public");
 
 
@@ -22,7 +23,8 @@ dbConnection(process.env.DATABASE_URL);
 //middlewares
 app.use(express.json());
 
-app.use(cors()); //corsOptions
+app.use(cors(corsOptions)); //
+console.log(corsOptions,allowedOrigins,"corsOptions");
 
 // app.use("/", express.static(publicPath)); //send static files of public to "/"
 // by default it takes the root directory and look for public folder, and send files to "/" route

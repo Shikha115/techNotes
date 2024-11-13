@@ -1,6 +1,6 @@
 {
   "name": "tech-notes",
-  "chapter": "lesson-4",
+  "chapter": "lesson-5-frontend",
   "version": "1.0.0",
   "description": "Mern Stack Project",
   "main": "server.js",
